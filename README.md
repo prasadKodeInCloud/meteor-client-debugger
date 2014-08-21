@@ -1,4 +1,4 @@
-client-Debugger smart package
+Client-Debugger Smart Package
 =============================
 
 This package facilitates developers to debug client side codes of meteor apps. In this version this faclilitates to log all the templates getting rendered at client events and log helpers getting triggered. 
