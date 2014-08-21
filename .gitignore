@@ -1,0 +1,4 @@
+packages
+*~
+smart.lock
+.build*
