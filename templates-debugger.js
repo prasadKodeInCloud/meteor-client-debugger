@@ -12,12 +12,12 @@ Deps.autorun(function () {
     }
 
     if( Session.get('debug_template') === 'helpers'){
-        console.log('called debug helpers ');
+        console.log('called debug helpers');
 
         for( var j in Template ){
             for( var k in Template[j] ){
                 if( isHelper( j, k ) ){
-                    new Extender().extendHelpers( j, k );
+                    Extender().extendHelpers( j, k );
                 }
             }
         }
@@ -25,11 +25,24 @@ Deps.autorun(function () {
 
 });
 
+function getRandomRolor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+} 
+
 function isHelper( tmpName, helper ){
+
+    if( !Template[tmpName].hasOwnProperty(helper))
+        return false;
+
     if( helper.slice(0, 1) === '_')
         return false;
 
-    if( _.contains(['render', 'rendered', 'instantiate'], helper ) )
+    if( _.contains(['render', 'rendered', 'instantiate', 'destroyed'], helper ) )
         return false;
 
     if( typeof( Template[tmpName][helper] ) === 'function' )
@@ -45,12 +58,11 @@ function Extender(){
             console.log('extend helper for : ', tmpName, helper );
 
             var helperFunc = Template[ tmpName ][ helper ];
-            
             if(helperFunc.length > 0 ){
                 console.log(tmpName, ' - ' , helper, 'contains more parameters : ', helperFunc.length );
                 return;
             }
-            
+
             Template[ tmpName ][ helper ] = function(){
                 if(console)
                     console.log( tmpName, '- called helper : ', helper );
@@ -63,9 +75,12 @@ function Extender(){
             console.log('extend rendered for : ', tmpName );
 
             var renderedFunc = Template[tmpName].rendered;
+            var color = getRandomRolor();
+
             Template[tmpName].rendered = function(){
                 if(console)
-                    console.log('Rendered Template : ', tmpName );
+                    console.log('%c Rendered Template : ' + tmpName + ' ' , 'background:##F3F6E3; color:' + color);
+                   
                 renderedFunc.apply( this, arguments ); 
 
             }  
