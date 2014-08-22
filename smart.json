@@ -3,7 +3,7 @@
   "description": "Facilitate to debug client side codes of meteor projects ",
   "homepage": "https://github.com/prasadKodeInCloud/meteor-client-debugger",
   "author": "Prasad Hewage( https://twitter.com/Prasad19sara )",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "git": "https://github.com/prasadKodeInCloud/meteor-client-debugger.git",
   "packages": {}
 }
