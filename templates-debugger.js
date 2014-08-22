@@ -45,6 +45,12 @@ function Extender(){
             console.log('extend helper for : ', tmpName, helper );
 
             var helperFunc = Template[ tmpName ][ helper ];
+            
+            if(helperFunc.length > 0 ){
+                console.log(tmpName, ' - ' , helper, 'contains more parameters : ', helperFunc.length );
+                return;
+            }
+            
             Template[ tmpName ][ helper ] = function(){
                 if(console)
                     console.log( tmpName, '- called helper : ', helper );
