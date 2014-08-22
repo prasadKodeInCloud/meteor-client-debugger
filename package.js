@@ -5,6 +5,6 @@ Package.describe({
 });
 
 Package.on_use(function(api) {
-  api.use(['templating']);
+  api.use(["session", "templating", "deps"]);
   api.add_files(['templates-debugger.js'], 'client');
 });
