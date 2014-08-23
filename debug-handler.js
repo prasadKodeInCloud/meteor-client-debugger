@@ -1,13 +1,6 @@
 
-var sessionPath = {
-	template: {
-		render: templateDebugger().render(),
-		helpers: templateDebugger().helpers(),
-		events: templateDebugger().events()
-	}
-}
 
-var extendedPaths = [];
+Session.setDefault('debug_template', null );
 
 Deps.autorun(function () {
     if( Session.get('debug_template') === 'render'){

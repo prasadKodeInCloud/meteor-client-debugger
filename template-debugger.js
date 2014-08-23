@@ -1,8 +1,3 @@
-Session.set('debug_template', null );
-
- sayHi = function(){
-    console.log('hi');
-}
 
 templateDebugger = function(){
     return{
@@ -21,11 +16,14 @@ templateDebugger = function(){
             console.log('called debug helpers');
 
             for( var j in Template ){
-                for( var k in Template[j] ){
-                    if( isHelper( j, k ) ){
-                      new Extender().extendHelper( j, k );
-                    }
+                if( isProjectTemplate( j ) ){
+                   for( var k in Template[j] ){
+                        if( isHelper( j, k ) ){
+                            new Extender().extendHelper( j, k );
+                        }
+                    } 
                 }
+                
             }
         },
 
@@ -51,8 +49,17 @@ templateDebugger = function(){
     }
 }
 
-function isHelper( tmpName, helper ){
+function isProjectTemplate( tmpName ){
+    if( tmpName === "prototype")
+        return false;
 
+    if( tmpName.slice(0, 1) === '_')
+        return false;
+
+    return true;
+}
+
+function isHelper( tmpName, helper ){
     if( !Template[tmpName].hasOwnProperty(helper))
         return false;
 
