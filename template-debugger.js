@@ -3,17 +3,17 @@ templateDebugger = function(){
     return{
 
         render:function(){
-            console.log('called debug render ');
+            console.log('%c called debug render ', 'background:#8AC007; color: #000000"');
 
             for( var k in Template ){
-                if(Template[k].rendered ){
+                if( isProjectTemplate( k ) ){
                     new Extender().extendRendered(k);
                 }
             }
         },
 
         helpers:function(){
-            console.log('called debug helpers');
+            console.log('%c called debug helpers ', 'background:#8AC007; color: #000000"');
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
@@ -28,7 +28,7 @@ templateDebugger = function(){
         },
 
         events:function(){
-            console.log('called debug events');
+            console.log('%c called debug events ', 'background:#8AC007; color: #000000"');
             for( var j in Template ){
                 if( Template[j]._events ){
                     for( var i = 0 ; i < Template[j]._events ; i++ ){
@@ -49,6 +49,12 @@ templateDebugger = function(){
     }
 }
 
+/**
+ * Check whether this template is defined in the project scope
+ * Need to validate with better conditions
+ * @param  {[type]}  tmpName Template Name
+ * @return {Boolean}         
+ */
 function isProjectTemplate( tmpName ){
     if( tmpName === "prototype")
         return false;
@@ -75,35 +81,64 @@ function isHelper( tmpName, helper ){
     return false;
 }
 
+//Must use closures to extend the events
 function Extender(){
     return {
 
         extendHelper:function( tmpName, helper ){
-            console.log('extend helper for : ', tmpName, helper );
+            console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'background:#84D9E0; color: #000000"' );
 
-            var helperFunc = Template[ tmpName ][ helper ];
+            //NOTE: This method didnt work due to some reason.
+            // var helperFunc = Template[ tmpName ][ helper ];
             
-            Template[ tmpName ][ helper ] = function(/* ...*/){
-                if(console)
-                    console.log( tmpName, '- called helper : ', helper );
-                helperFunc.apply( this, arguments ); 
+            // Template[ tmpName ][ helper ] = function(/* ...*/){
+            //     if(console)
+            //         console.log( tmpName, '- called helper : ', helper );
+            //     helperFunc.apply( this, arguments ); 
 
-            }  
+            // }  
+            
+            //NOTE: Need to replace this if found a better solution. 
+            
+            var color = getRandomColor();
+            var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'background:#F3F6E3; color: " + color + "')";
+            var funcString = Template[ tmpName ][ helper ].toString();
+            funcString = funcString.replace('{', '{@#$%^&*');
+            var strArr = funcString.split('@#$%^&*');
+            strArr[0] = strArr[0]  + logMsg;
+
+            var newFuncString = '';
+            for(var i = 0 ; i < strArr.length ; i++){
+                newFuncString += strArr[i];
+            }
+
+            eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
+            Template[ tmpName ][ helper ] = eval( tmpName + '_' + helper );
         },
 
         extendRendered:function( tmpName ){
-            console.log('extend rendered for : ', tmpName );
-
-            var renderedFunc = Template[tmpName].rendered;
+            console.log('%c    extend rendered for : ' + tmpName + ' template ','background:#F3BAD3; color: #000000"');
+            
             var color = getRandomColor();
+            
+            if(Template[tmpName].rendered && typeof( Template[tmpName].rendered ) === 'function'){
+                var renderedFunc = Template[tmpName].rendered;
+                
+                Template[tmpName].rendered = function(/* ...*/){
+                    if(console)
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'background:#F3F6E3; color:' + color);
+                       
+                    renderedFunc.apply( this, arguments ); 
 
-            Template[tmpName].rendered = function(/* ...*/){
-                if(console)
-                    console.log('%c Rendered Template : ' + tmpName + ' ' , 'background:##F3F6E3; color:' + color);
-                   
-                renderedFunc.apply( this, arguments ); 
+                } 
 
-            }  
+            }else{
+                Template[tmpName].rendered = function(){
+                    if(console)
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'background:#F3F6E3; color:' + color);
+                }
+            }
+            
         },
 
         extendEvent: function ( tmpName, i, evt ){
@@ -112,7 +147,7 @@ function Extender(){
 
             Template[tmpName].__eventMaps[i][evt] = function(event/*, ...*/){
                 if(console)
-                    console.log('%c Triggered event : ' + tmpName + ' - ' + evt + ' ' , 'background:##F3F6E3; color:' + color);
+                    console.log('%c Triggered event : ' + tmpName + ' - ' + evt + ' ' , 'background:#F3F6E3; color:' + color);
                 
                 eventHandler.apply( this, arguments);
             }
@@ -124,7 +159,7 @@ function Extender(){
 
             Template[tmpName]._event[i].handler = function(event/*, ...*/){
                 if(console)
-                    console.log('%c Triggered event : ' + tmpName + ' - ' + evt + ' ' , 'background:##F3F6E3; color:' + color);
+                    console.log('%c Triggered event : ' + tmpName + ' - ' + evt + ' ' , 'background:#F3F6E3; color:' + color);
                 
                 eventHandler.apply( this, arguments);
             }
