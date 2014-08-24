@@ -11,12 +11,21 @@ Template.prototype.events = function ( eventMap ) {
     originalEventsPrototype.apply( this, arguments ); 
 };
 
+// var originalHelpersPrototype = Template.prototype.helpers;
+// Template.prototype.helpers = function ( dict ) {
+//     console.log('>>>>>>>>>>>>>>>>> Dict: ', dict );
+//     for (var k in dict){
+//         dict[k] = new Extender().extendedHelper(this.__templateName, k, dict[k]);
+//     }
+    
+//     originalHelpersPrototype.apply( this, arguments );
+// };
 
 templateDebugger = function(){
     return{
 
         render:function(){
-            console.log('%c called debug render ', 'background:#8AC007; color: #000000"');
+            console.log('%c called debug render ', 'font-size:14px;background:#8AC007; color: #000000"');
 
             for( var k in Template ){
                 if( isProjectTemplate( k ) ){
@@ -26,7 +35,7 @@ templateDebugger = function(){
         },
 
         helpers:function(){
-            console.log('%c called debug helpers ', 'background:#8AC007; color: #000000"');
+            console.log('%c called debug helpers ', 'font-size:14px;background:#8AC007; color: #000000"');
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
@@ -69,6 +78,9 @@ templateDebugger = function(){
  * @return {Boolean}         
  */
 function isProjectTemplate( tmpName ){
+    if(UI._globalHelpers && UI._globalHelpers[tmpName])
+        return false;
+
     if( tmpName === "prototype")
         return false;
 
@@ -98,8 +110,34 @@ function isHelper( tmpName, helper ){
 function Extender(){
     return {
 
+         extendedHelper: function( tmpName, helper, func ){
+            var color = getRandomColor();
+            return function(/* ...*/){
+                if(Session.get('debug_template_helpers') === true ){
+                    console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                }
+
+                func.apply( this, arguments );
+            }
+
+            // var color = getRandomColor();
+            // var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
+            // var funcString = func.toString();
+            // funcString = funcString.replace('{', '{@#$%^&*');
+            // var strArr = funcString.split('@#$%^&*');
+            // strArr[0] = strArr[0]  + logMsg;
+
+            // var newFuncString = '';
+            // for(var i = 0 ; i < strArr.length ; i++){
+            //     newFuncString += strArr[i];
+            // }
+
+            // eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
+            // return eval( tmpName + '_' + helper );
+        },
+
         extendHelper:function( tmpName, helper ){
-            console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'background:#84D9E0; color: #000000"' );
+            console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
 
             //NOTE: This method didnt work due to some reason.
             // var helperFunc = Template[ tmpName ][ helper ];
@@ -107,14 +145,15 @@ function Extender(){
             // Template[ tmpName ][ helper ] = function(/* ...*/){
             //     if(console)
             //         console.log( tmpName, '- called helper : ', helper );
-            //     helperFunc.apply( this, arguments ); 
+            //     helperFunc.apply( Template[ tmpName ], arguments ); 
 
             // }  
             
             //NOTE: Need to replace this if found a better solution. 
+            //This version still cannot access the objects defined in global scope.
             
             var color = getRandomColor();
-            var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
+            var logMsg = "console.log('%c Called " + helper + " helper of template " + tmpName + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
             var funcString = Template[ tmpName ][ helper ].toString();
             funcString = funcString.replace('{', '{@#$%^&*');
             var strArr = funcString.split('@#$%^&*');
@@ -130,7 +169,7 @@ function Extender(){
         },
 
         extendRendered:function( tmpName ){
-            console.log('%c    extend rendered for : ' + tmpName + ' template ','background:#F3BAD3; color: #000000"');
+            console.log('%c    extend rendered for : ' + tmpName + ' template ','font-size:12px;background:#F3BAD3; color: #000000"');
             
             var color = getRandomColor();
             
