@@ -23,7 +23,7 @@ To log the templates getting rendered at client side events, type this in browse
 Session.set('debug_template', 'render' );
 
 ```
-To log the eents getting triggered.
+To log the events getting triggered.
 
 ```js
 Session.set('debug_template_events', true );
