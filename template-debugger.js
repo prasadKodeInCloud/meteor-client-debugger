@@ -114,7 +114,7 @@ function Extender(){
             //NOTE: Need to replace this if found a better solution. 
             
             var color = getRandomColor();
-            var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'font-size:12px; background:#F3F6E3; color: " + color + "');";
+            var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
             var funcString = Template[ tmpName ][ helper ].toString();
             funcString = funcString.replace('{', '{@#$%^&*');
             var strArr = funcString.split('@#$%^&*');
@@ -139,7 +139,7 @@ function Extender(){
                 
                 Template[tmpName].rendered = function(/* ...*/){
                     if(console)
-                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#F3F6E3; color:' + color);
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#E9F0B6; color:' + color);
                        
                     renderedFunc.apply( this, arguments ); 
 
@@ -148,7 +148,7 @@ function Extender(){
             }else{
                 Template[tmpName].rendered = function(){
                     if(console)
-                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#F3F6E3; color:' + color);
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#E9F0B6; color:' + color);
                 }
             }
             
@@ -158,7 +158,7 @@ function Extender(){
             var color = getRandomColor();
             return function(/* ...*/){
                 if(Session.get('debug_template_events') === true ){
-                    console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#F3F6E3; color:' + color);
+                    console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
                 }
 
                 func.apply( this, arguments );
