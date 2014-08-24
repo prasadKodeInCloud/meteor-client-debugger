@@ -6,6 +6,8 @@ This package is tested on meteor 0.8.1.3 version. This facilitates developers to
 	1. log templates getting rendered at client events.
 	2. log template events getting triggered. 
 
+Logs will be displayed in different color :green_heart:
+
 Installation
 ------------
 
