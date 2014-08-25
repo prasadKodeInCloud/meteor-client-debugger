@@ -12,4 +12,8 @@ Deps.autorun(function () {
         templateDebugger().helpers();
     }
 
+    if( Session.get('debug_template') === 'events'){
+        templateDebugger().events();
+    }
+
 });
