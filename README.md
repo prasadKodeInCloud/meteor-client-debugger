@@ -3,8 +3,9 @@ Client-Debugger Smart Package
 
 This package is tested onwards meteor 0.8.1.3 version. This facilitates developers to debug client side codes of meteor apps for identified useful senarios. Other wise developers have to put break points in developer console or add console.logs manualy inside code to detect function executions :tired_face:. This version of package faclilitates to,
 
-	1. log templates getting rendered at client events.
-	2. log template events getting triggered. 
+	1. Log templates getting rendered at client events.
+	2. Log template helpers getting called.
+	3. Log template events getting triggered. 
 
 Logs will be displayed in different color :green_heart:
 
