@@ -1,15 +1,20 @@
 
 
 //Extend the Template events prototype to include console.log
-var originalEventsPrototype  = Template.prototype.events;
+//For Meteor 0.8.1.3
+if(Template.prototype && Template.prototype.events ){
+    var originalEventsPrototype  = Template.prototype.events;
 
-Template.prototype.events = function ( eventMap ) {
-    for (var k in eventMap) {
-        eventMap[k] = new Extender().extendedEvent(this.__templateName, k, eventMap[k]);
-    }
+    Template.prototype.events = function ( eventMap ) {
+        for (var k in eventMap) {
+            eventMap[k] = new Extender().extendedEvent(this.__templateName, k, eventMap[k]);
+        }
 
-    originalEventsPrototype.apply( this, arguments ); 
-};
+        originalEventsPrototype.apply( this, arguments ); 
+    };
+
+}
+
 
 // var originalHelpersPrototype = Template.prototype.helpers;
 // Template.prototype.helpers = function ( dict ) {
@@ -50,21 +55,29 @@ templateDebugger = function(){
         },
 
         events:function(){
-            console.log('%c called debug events ', 'background:#8AC007; color: #000000"');
+            console.log('%c called debug events ', 'font-size:14px;background:#8AC007; color: #000000"');
             for( var j in Template ){
-                if( Template[j]._events ){
-                    for( var i = 0 ; i < Template[j]._events ; i++ ){
-                        new Extender().extendEventByEvents( j, i );
+                //For Meteor 0.8.1.3
+                // if( Template[j].events ){
+                //     for(var m in Template[j].events ){
+                //         new Extender().extendEventByKey( j, m );
+                //     }
+                // }
+
+                //For Meteor 0.8.1.3
+                if( Template[j]._events  && _.isArray(Template[j]._events) ){
+                    for( var i = 0 ; i < Template[j]._events.length ; i++ ){
+                        new Extender().extendEventByEventsArray( j, i );
                     }
                 }
 
-                if( Template[j].__eventMaps ){
-                    for( var i = 0 ; i < Template[j].__eventMaps.length ; i++ ){
-                        for( var key in Template[j].__eventMaps[i] ){
-                            new Extender().extendEvent( j, i, key );
-                        } 
-                    }
-                }
+                // if( Template[j].__eventMaps ){
+                //     for( var i = 0 ; i < Template[j].__eventMaps.length ; i++ ){
+                //         for( var key in Template[j].__eventMaps[i] ){
+                //             new Extender().extendEvent( j, i, key );
+                //         } 
+                //     }
+                // }
             }    
         }
 
@@ -202,7 +215,37 @@ function Extender(){
 
                 func.apply( this, arguments );
             }
+        },
+
+        extendEventByKey:function( tmpName, evt ){
+            console.log('%c    extend '+ tmpName +  ' event : ' + evt + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
+            var color = getRandomColor();
+            var eventFun = Template[ tmpName ].events[ evt ];
+            
+            Template[ tmpName ].events[ evt ] = function(/* ...*/){
+                if(console)
+                     console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                eventFun.apply( this, arguments ); 
+
+            } 
+        },
+
+         extendEventByEventsArray:function( tmpName, i ){
+            var evt = Template[tmpName]._events[i].events + ' ' + Template[tmpName]._events[i].selector;
+
+            console.log('%c    extend '+ tmpName +  ' event : ' + evt + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
+            var color = getRandomColor();
+            var eventFun =  Template[tmpName]._events[i].handler;
+            
+            Template[tmpName]._events[i].handler = function(/* ...*/){
+                if(console)
+                     console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                eventFun.apply( this, arguments ); 
+
+            } 
         }
+
+
     }
 }
 

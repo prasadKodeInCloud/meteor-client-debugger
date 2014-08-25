@@ -41,10 +41,18 @@ example log displays at template render:
 
 To log the template events getting triggered, type this in browser console.
 
+For Onwards Meteor 0.8.2
 ```js
 Session.set('debug_template_events', true );
 
 ```
+
+For Below Meteor 0.8.2
+```js
+Session.set('debug_template', 'events' );
+
+```
+
 example log displays at an event trigger:
 
 	* Triggered "click .test-btn" event of "hello" template 
