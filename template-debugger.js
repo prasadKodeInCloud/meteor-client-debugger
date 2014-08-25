@@ -1,5 +1,4 @@
 
-
 //Extend the Template events prototype to include console.log
 //For Meteor 0.8.1.3
 if(Template.prototype && Template.prototype.events ){
@@ -14,30 +13,6 @@ if(Template.prototype && Template.prototype.events ){
     };
 }
 
-
-// var originalHelpersPrototype = Template.prototype.helpers;
-// Template.prototype.helpers = function ( dict ) {
-//     console.log('>>>>>>>>>>>>>>>>> Dict: ', dict );
-//     for (var k in dict){
-//         dict[k] = new Extender().extendedHelper(this.__templateName, k, dict[k]);
-//     }
-    
-//     originalHelpersPrototype.apply( this, arguments );
-// };
-
-function extendedHelper( tmpName, helper, func ){
-    console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
-    
-    var color = getRandomColor();
-    
-    return function(){
-        var args = Array.prototype.slice.call( arguments );
-        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
-        var result = func.apply( this, args );
-        
-        return result;
-    }
-}
 
 templateDebugger = function(){
     return{
@@ -57,10 +32,6 @@ templateDebugger = function(){
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
-                    // _.each(Template[j], function ( hookFn, name ) {
-                    //     if( isHelper( j, name ) )
-                    //         Template[j][name] = extendedHelper( j, name, hookFn );
-                    // });
                    for( var k in Template[j] ){
                         if( isHelper( j, k ) ){
                             new Extender().extendHelper( j, k );
@@ -75,13 +46,6 @@ templateDebugger = function(){
             console.log('%c called debug events ', 'font-size:14px;background:#8AC007; color: #000000"');
             for( var j in Template ){
                 //For Meteor 0.8.1.3
-                // if( Template[j].events ){
-                //     for(var m in Template[j].events ){
-                //         new Extender().extendEventByKey( j, m );
-                //     }
-                // }
-
-                //For Meteor 0.8.1.3
                 if( Template[j]._events  && _.isArray(Template[j]._events) ){
                     for( var i = 0 ; i < Template[j]._events.length ; i++ ){
                         new Extender().extendEventByEventsArray( j, i );
@@ -92,14 +56,6 @@ templateDebugger = function(){
                 if( Template[j].__eventMaps && _.isArray(Template[j].__eventMaps ) ){
                     Session.set('debug_template_events', true );
                 }
-                
-                // if( Template[j].__eventMaps ){
-                //     for( var i = 0 ; i < Template[j].__eventMaps.length ; i++ ){
-                //         for( var key in Template[j].__eventMaps[i] ){
-                //             new Extender().extendEvent( j, i, key );
-                //         } 
-                //     }
-                // }
             }    
         }
 
@@ -141,7 +97,6 @@ function isHelper( tmpName, helper ){
     return false;
 }
 
-//Must use closures to extend the events
 function Extender(){
     return {
 
@@ -155,20 +110,6 @@ function Extender(){
                 func.apply( this, arguments );
             }
 
-            // var color = getRandomColor();
-            // var logMsg = "console.log('%c " + tmpName + " - called helper : " + helper + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
-            // var funcString = func.toString();
-            // funcString = funcString.replace('{', '{@#$%^&*');
-            // var strArr = funcString.split('@#$%^&*');
-            // strArr[0] = strArr[0]  + logMsg;
-
-            // var newFuncString = '';
-            // for(var i = 0 ; i < strArr.length ; i++){
-            //     newFuncString += strArr[i];
-            // }
-
-            // eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
-            // return eval( tmpName + '_' + helper );
         },
 
         extendHelper:function( tmpName, helper ){
@@ -179,31 +120,14 @@ function Extender(){
             
             Template[ tmpName ][ helper ] = function(/* ...*/){
                 if(console)
-                    console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                    console.log('%c Called helper "' + helper + '" of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
                 
                 var result = helperFunc.apply( Template[ tmpName ], arguments ); 
 
                 return result;
 
             }  
-            
-            //NOTE: Need to replace this if found a better solution. 
-            //This version still cannot access the objects defined in global scope.
-            
-            // var color = getRandomColor();
-            // var logMsg = "console.log('%c Called " + helper + " helper of template " + tmpName + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
-            // var funcString = Template[ tmpName ][ helper ].toString();
-            // funcString = funcString.replace('{', '{@#$%^&*');
-            // var strArr = funcString.split('@#$%^&*');
-            // strArr[0] = strArr[0]  + logMsg;
 
-            // var newFuncString = '';
-            // for(var i = 0 ; i < strArr.length ; i++){
-            //     newFuncString += strArr[i];
-            // }
-
-            // eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
-            // Template[ tmpName ][ helper ] = eval( tmpName + '_' + helper );
         },
 
         extendRendered:function( tmpName ){
@@ -242,21 +166,6 @@ function Extender(){
             }
         },
 
-        extendEvent:function( tmpName, i, evt ){
-            console.log('%c    extend '+ tmpName +  ' event : ' + evt + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
-            var color = getRandomColor();
-            var eventFun = Template[tmpName].__eventMaps[i][evt];
-            
-            Template[tmpName].__eventMaps[i][evt] = function(/* ...*/){
-                if(console)
-                     console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
-                var result = eventFun.apply( this, arguments ); 
-
-                return result;
-
-            } 
-        },
-
          extendEventByEventsArray:function( tmpName, i ){
             var evt = Template[tmpName]._events[i].events + ' ' + Template[tmpName]._events[i].selector;
 
@@ -271,8 +180,6 @@ function Extender(){
 
             } 
         }
-
-
     }
 }
 

@@ -1,9 +1,9 @@
 {
   "name": "client-debugger",
-  "description": "Facilitates to debug client side codes of meteor projects ",
+  "description": "Facilitates to debug client side codes of meteor projects. Currently supports to debug templates.",
   "homepage": "https://github.com/prasadKodeInCloud/meteor-client-debugger",
-  "author": "Prasad Hewage( https://twitter.com/Prasad19sara )",
-  "version": "0.1.7",
+  "author": "Prasad Hewage(https://twitter.com/Prasad19sara)",
+  "version": "0.1.8",
   "git": "https://github.com/prasadKodeInCloud/meteor-client-debugger.git",
   "packages": {}
 }
