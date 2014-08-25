@@ -1,6 +1,9 @@
 
+Meteor.startup( function() {
+    Session.setDefault('debug_template', null );
+    Session.setDefault('debug_template_events', false );    
+});
 
-Session.setDefault('debug_template', null );
 
 Deps.autorun(function () {
     if( Session.get('debug_template') === 'render'){

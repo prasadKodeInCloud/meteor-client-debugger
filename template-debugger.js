@@ -12,7 +12,6 @@ if(Template.prototype && Template.prototype.events ){
 
         originalEventsPrototype.apply( this, arguments ); 
     };
-
 }
 
 
@@ -25,6 +24,20 @@ if(Template.prototype && Template.prototype.events ){
     
 //     originalHelpersPrototype.apply( this, arguments );
 // };
+
+function extendedHelper( tmpName, helper, func ){
+    console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
+    
+    var color = getRandomColor();
+    
+    return function(){
+        var args = Array.prototype.slice.call( arguments );
+        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+        var result = func.apply( this, args );
+        
+        return result;
+    }
+}
 
 templateDebugger = function(){
     return{
@@ -44,6 +57,10 @@ templateDebugger = function(){
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
+                    // _.each(Template[j], function ( hookFn, name ) {
+                    //     if( isHelper( j, name ) )
+                    //         Template[j][name] = extendedHelper( j, name, hookFn );
+                    // });
                    for( var k in Template[j] ){
                         if( isHelper( j, k ) ){
                             new Extender().extendHelper( j, k );
@@ -71,6 +88,11 @@ templateDebugger = function(){
                     }
                 }
 
+                //Onwards Meteor 0.8.1.3
+                if( Template[j].__eventMaps && _.isArray(Template[j].__eventMaps ) ){
+                    Session.set('debug_template_events', true );
+                }
+                
                 // if( Template[j].__eventMaps ){
                 //     for( var i = 0 ; i < Template[j].__eventMaps.length ; i++ ){
                 //         for( var key in Template[j].__eventMaps[i] ){
@@ -152,33 +174,36 @@ function Extender(){
         extendHelper:function( tmpName, helper ){
             console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
 
-            //NOTE: This method didnt work due to some reason.
-            // var helperFunc = Template[ tmpName ][ helper ];
+            var color = getRandomColor();
+            var helperFunc = Template[ tmpName ][ helper ];
             
-            // Template[ tmpName ][ helper ] = function(/* ...*/){
-            //     if(console)
-            //         console.log( tmpName, '- called helper : ', helper );
-            //     helperFunc.apply( Template[ tmpName ], arguments ); 
+            Template[ tmpName ][ helper ] = function(/* ...*/){
+                if(console)
+                    console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                
+                var result = helperFunc.apply( Template[ tmpName ], arguments ); 
 
-            // }  
+                return result;
+
+            }  
             
             //NOTE: Need to replace this if found a better solution. 
             //This version still cannot access the objects defined in global scope.
             
-            var color = getRandomColor();
-            var logMsg = "console.log('%c Called " + helper + " helper of template " + tmpName + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
-            var funcString = Template[ tmpName ][ helper ].toString();
-            funcString = funcString.replace('{', '{@#$%^&*');
-            var strArr = funcString.split('@#$%^&*');
-            strArr[0] = strArr[0]  + logMsg;
+            // var color = getRandomColor();
+            // var logMsg = "console.log('%c Called " + helper + " helper of template " + tmpName + " ' , 'font-size:12px; background:#E9F0B6; color: " + color + "');";
+            // var funcString = Template[ tmpName ][ helper ].toString();
+            // funcString = funcString.replace('{', '{@#$%^&*');
+            // var strArr = funcString.split('@#$%^&*');
+            // strArr[0] = strArr[0]  + logMsg;
 
-            var newFuncString = '';
-            for(var i = 0 ; i < strArr.length ; i++){
-                newFuncString += strArr[i];
-            }
+            // var newFuncString = '';
+            // for(var i = 0 ; i < strArr.length ; i++){
+            //     newFuncString += strArr[i];
+            // }
 
-            eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
-            Template[ tmpName ][ helper ] = eval( tmpName + '_' + helper );
+            // eval('var ' + tmpName + '_' + helper + ' = ' + newFuncString );
+            // Template[ tmpName ][ helper ] = eval( tmpName + '_' + helper );
         },
 
         extendRendered:function( tmpName ){
@@ -217,15 +242,17 @@ function Extender(){
             }
         },
 
-        extendEventByKey:function( tmpName, evt ){
+        extendEvent:function( tmpName, i, evt ){
             console.log('%c    extend '+ tmpName +  ' event : ' + evt + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
             var color = getRandomColor();
-            var eventFun = Template[ tmpName ].events[ evt ];
+            var eventFun = Template[tmpName].__eventMaps[i][evt];
             
-            Template[ tmpName ].events[ evt ] = function(/* ...*/){
+            Template[tmpName].__eventMaps[i][evt] = function(/* ...*/){
                 if(console)
                      console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
-                eventFun.apply( this, arguments ); 
+                var result = eventFun.apply( this, arguments ); 
+
+                return result;
 
             } 
         },
