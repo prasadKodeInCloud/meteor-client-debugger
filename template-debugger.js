@@ -13,6 +13,19 @@ if(Template.prototype && Template.prototype.events ){
     };
 }
 
+function extendedHelper( tmpName, helper, func ){
+    console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
+    
+    var color = getRandomColor();
+    
+    return function(){
+        var args = Array.prototype.slice.call( arguments );
+        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+        var result = func.apply( this, args );
+        
+        return result;
+    }
+}
 
 templateDebugger = function(){
     return{
@@ -32,11 +45,10 @@ templateDebugger = function(){
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
-                   for( var k in Template[j] ){
-                        if( isHelper( j, k ) ){
-                            new Extender().extendHelper( j, k );
-                        }
-                    } 
+                     _.each(Template[j], function ( hookFn, name ) {
+                        if( isHelper( j, name ) )
+                            Template[j][name] = extendedHelper( j, name, hookFn );
+                    });
                 }
                 
             }
