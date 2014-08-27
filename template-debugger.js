@@ -1,4 +1,31 @@
 
+
+//Override Jquery 'on' function to track events getting triggered. 
+
+var OriginaljQueryOn = jQuery.fn.on ;
+var eventsToTrack = ['click', 'focus','blur', 'keydown', 'keyup'];
+
+jQuery.fn.on = function ( types, selector, data, fn, /*INTERNAL*/ one ) { 
+    var currentSelector = null;
+    if( this.context && this.context.className )
+        currentSelector = this.context.className ;
+    else if( this.className )
+        currentSelector = this.className ;
+
+    if( currentSelector && _.contains( eventsToTrack, types ) && typeof( selector ) === 'function' ){
+        var originalFn = selector;
+
+        selector = function(/* ...*/){
+            console.log( 'Trgiggered jQuery event : ', types , ' of ' , currentSelector  );
+            originalFn.apply( this, arguments );
+        }
+    }
+
+    var result = OriginaljQueryOn.apply( this, arguments );
+
+    return result;
+
+}
 //Extend the Template events prototype to include console.log
 //For Meteor 0.8.1.3
 if(Template.prototype && Template.prototype.events ){
