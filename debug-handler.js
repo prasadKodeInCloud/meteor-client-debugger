@@ -19,4 +19,10 @@ Deps.autorun(function () {
         templateDebugger().events();
     }
 
+    if( Session.get('debug_template') === '*'){
+        templateDebugger().render();
+        templateDebugger().helpers();
+        templateDebugger().events();
+    }
+
 });

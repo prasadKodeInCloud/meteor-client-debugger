@@ -55,3 +55,16 @@ Session.set('debug_template', 'events' );
 example log :
 
 	* Triggered "click .test-btn" event of "hello" template 
+
+####Debug All
+
+To log using all the debugging options,
+
+```js
+Session.set('debug_template', '*' );
+```
+
+Remove Debug Mode
+-----------------
+
+To get rid of debug mode just refresh the browser.

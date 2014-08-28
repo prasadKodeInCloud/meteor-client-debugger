@@ -47,7 +47,7 @@ function extendedHelper( tmpName, helper, func ){
     
     return function(){
         var args = Array.prototype.slice.call( arguments );
-        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#CADFF5; color:' + color);
         var result = func.apply( this, args );
         
         return result;
@@ -143,7 +143,7 @@ function Extender(){
             var color = getRandomColor();
             return function(/* ...*/){
                 if(Session.get('debug_template_helpers') === true ){
-                    console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                    console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#CADFF5; color:' + color);
                 }
 
                 func.apply( this, arguments );
@@ -159,7 +159,7 @@ function Extender(){
             
             Template[ tmpName ][ helper ] = function(/* ...*/){
                 if(console)
-                    console.log('%c Called helper "' + helper + '" of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                    console.log('%c Called helper "' + helper + '" of "' + tmpName + '" template ', 'font-size:12px; background:#CADFF5; color:' + color);
                 
                 var result = helperFunc.apply( Template[ tmpName ], arguments ); 
 
@@ -179,7 +179,7 @@ function Extender(){
                 
                 Template[tmpName].rendered = function(/* ...*/){
                     if(console)
-                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#E9F0B6; color:' + color);
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#CADFF5; color:' + color);
                        
                     renderedFunc.apply( this, arguments ); 
 
@@ -188,7 +188,7 @@ function Extender(){
             }else{
                 Template[tmpName].rendered = function(){
                     if(console)
-                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#E9F0B6; color:' + color);
+                        console.log('%c Rendered Template : ' + tmpName + ' ' , 'font-size:12px; background:#CADFF5; color:' + color);
                 }
             }
             
@@ -198,7 +198,7 @@ function Extender(){
             var color = getRandomColor();
             return function(/* ...*/){
                 if(Session.get('debug_template_events') === true ){
-                    console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                    console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#CADFF5; color:' + color);
                 }
 
                 func.apply( this, arguments );
@@ -214,7 +214,7 @@ function Extender(){
             
             Template[tmpName]._events[i].handler = function(/* ...*/){
                 if(console)
-                     console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; background:#E9F0B6; color:' + color);
+                     console.log('%c Triggered "' + evt + '" event of "' + tmpName + '" template ', 'font-size:12px; font-weight:bold; background:#D5BDE6; color:' + color);
                 eventFun.apply( this, arguments ); 
 
             } 
