@@ -46,10 +46,13 @@ function extendedHelper( tmpName, helper, func ){
     var color = getRandomColor();
     
     return function(){
+
+        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ' , 'font-size:12px; background:#CADFF5; color:' + color);
         var args = Array.prototype.slice.call( arguments );
-        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ', 'font-size:12px; background:#CADFF5; color:' + color);
         var result = func.apply( this, args );
-        
+        if( result != undefined )
+           console.log('    Result: ', result );
+           
         return result;
     }
 }

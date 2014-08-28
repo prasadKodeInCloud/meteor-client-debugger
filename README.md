@@ -42,6 +42,7 @@ Session.set('debug_template', 'helpers' );
 example log : 
 
 	* Called helper "name" of "personalInfo" template
+		Result : < return value of the helper >
 
 
 ####Template Events
@@ -67,4 +68,4 @@ Session.set('debug_template', '*' );
 Remove Debug Mode
 -----------------
 
-To get rid of debug mode just refresh the browser.
+To get rid of debug mode, just refresh the browser.
