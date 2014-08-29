@@ -1,7 +1,7 @@
 
 Package.describe({
 
-  name: "client-debugger",
+  name: "prasad19sara:client-debugger",
   summary: "Facilitates to debug client side codes of meteor apps. ",
   homepage: "https://github.com/prasadKodeInCloud/meteor-client-debugger",
   author: "Prasad Hewage(https://twitter.com/Prasad19sara)",
