@@ -11,6 +11,10 @@ Package.describe({
 });
 
 Package.on_use(function(api) {
-  api.use(["session", "templating", "deps", "underscore"]);
+  api.versionsFrom("METEOR@0.9.0");
+  api.use('templating', 'client');
+  api.use('deps', 'client');
+  api.use('session', 'client');
+  api.use('underscore', 'client');
   api.add_files(["template-debugger.js", "utils.js", "debug-handler.js" ], 'client');
 });
