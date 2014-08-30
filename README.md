@@ -9,6 +9,8 @@ This package is tested onwards meteor 0.8.1.3 version. This facilitates develope
 
 Logs will be displayed in different color :green_heart:
 
+[![Client-Debugger - Client side debugging tool for meteor apps.](https://silvrback.s3.amazonaws.com/uploads/49212fac-3154-4fc4-8359-df9d2ba52b4e/client-debugger1_large.png)](https://atmospherejs.com/prasad19sara/client-debugger)
+
 Installation
 ------------
 
