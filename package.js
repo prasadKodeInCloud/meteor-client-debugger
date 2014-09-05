@@ -17,4 +17,5 @@ Package.on_use(function(api) {
   api.use('session', 'client');
   api.use('underscore', 'client');
   api.add_files(["template-debugger.js", "utils.js", "debug-handler.js" ], 'client');
+  api.export(["ClientDebugger"]);
 });

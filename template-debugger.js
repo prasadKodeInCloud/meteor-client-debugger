@@ -1,31 +1,33 @@
-
+ClientDebugger = {
+    templates : []
+}
 
 //Override Jquery 'on' function to track events getting triggered. 
 
-var OriginaljQueryOn = jQuery.fn.on ;
-var eventsToTrack = ['click', 'focus','blur', 'keydown', 'keyup'];
+// var OriginaljQueryOn = jQuery.fn.on ;
+// var eventsToTrack = ['click', 'focus','blur', 'keydown', 'keyup'];
 
-jQuery.fn.on = function ( types, selector, data, fn, /*INTERNAL*/ one ) { 
-    var currentSelector = null;
-    if( this.context && this.context.className )
-        currentSelector = this.context.className ;
-    else if( this.className )
-        currentSelector = this.className ;
+// jQuery.fn.on = function ( types, selector, data, fn, /*INTERNAL*/ one ) { 
+//     var currentSelector = null;
+//     if( this.context && this.context.className )
+//         currentSelector = this.context.className ;
+//     else if( this.className )
+//         currentSelector = this.className ;
 
-    if( currentSelector && _.contains( eventsToTrack, types ) && typeof( selector ) === 'function' ){
-        var originalFn = selector;
+//     if( currentSelector && _.contains( eventsToTrack, types ) && typeof( selector ) === 'function' ){
+//         var originalFn = selector;
 
-        selector = function(/* ...*/){
-            console.log( 'Trgiggered jQuery event : ', types , ' of ' , currentSelector  );
-            originalFn.apply( this, arguments );
-        }
-    }
+//         selector = function(/* ...*/){
+//             console.log( 'Trgiggered jQuery event : ', types , ' of ' , currentSelector  );
+//             originalFn.apply( this, arguments );
+//         }
+//     }
 
-    var result = OriginaljQueryOn.apply( this, arguments );
+//     var result = OriginaljQueryOn.apply( this, arguments );
 
-    return result;
+//     return result;
 
-}
+// }
 //Extend the Template events prototype to include console.log
 //For Meteor 0.8.1.3
 if(Template.prototype && Template.prototype.events ){
@@ -40,17 +42,26 @@ if(Template.prototype && Template.prototype.events ){
     };
 }
 
+function showHelperLog( tmpName ){
+    if(!ClientDebugger.templates || ClientDebugger.templates.length === 0 )
+        return true;
+    
+    return _.contains( ClientDebugger.templates, tmpName ) ;
+}
+
 function extendedHelper( tmpName, helper, func ){
     console.log('%c    extend '+ tmpName +  ' template helper : ' + helper + ' ' , 'font-size:12px;background:#84D9E0; color: #000000"' );
     
     var color = getRandomColor();
     
     return function(){
-
-        console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ' , 'font-size:12px; background:#CADFF5; color:' + color);
+        var showLog = showHelperLog( tmpName );
+        if( showLog )
+            console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ' , 'font-size:12px; background:#CADFF5; color:' + color);
+        
         var args = Array.prototype.slice.call( arguments );
         var result = func.apply( this, args );
-        if( result != undefined )
+        if( result != undefined && showLog  )
            console.log('    Result: ', result );
            
         return result;
