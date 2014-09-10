@@ -78,6 +78,7 @@ Session.set('debug_template', '*' );
 
 Sometimes you will need to check whether is there any change in the loading time after adding or removing template helpers or templates after triggering an event (ex: route change ).
 To test this,
+
 	1. Type in console : Session.set('debug_template' , 'helpers')
 	2. Type in console : ClientDebugger.start()
 	3. Fire the event 
