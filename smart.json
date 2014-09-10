@@ -4,6 +4,6 @@
   "homepage": "https://github.com/prasadKodeInCloud/meteor-client-debugger",
   "author": "Prasad Hewage(https://twitter.com/Prasad19sara)",
   "version": "0.1.12-0.8",
-  "git": "https://github.com/prasadKodeInCloud/meteor-client-debugger.git",
+  "git": "https://github.com/prasadKodeInCloud/meteor-client-debugger/tree/meteor-0.8",
   "packages": {}
 }
