@@ -7,7 +7,7 @@ Meteor.startup( function() {
 
 Deps.autorun(function () {
     if( Session.get('debug_template') === 'render'){
-    	console.log('session is render');
+        console.log('session is render');
         templateDebugger().render();
     }
 
