@@ -74,7 +74,7 @@ To log using all the debugging options,
 Session.set('debug_template', '*' );
 ```
 
-####Calculate totoal loading time of helpers
+####Calculate total loading time of helpers
 
 Sometimes you will need to check whether is there any change in the loading time after adding or removing template helpers or templates when triggering an event (ex: route change ).
 To test this,
