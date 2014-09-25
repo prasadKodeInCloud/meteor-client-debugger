@@ -1,5 +1,43 @@
+
 ClientDebugger = {
-    templates : []
+    templates : [],
+    helperTracker:[],
+    showHelperLogs: true,
+    start: function(){
+        ClientDebugger.helperTracker = []//{template-helper: time }
+    },
+
+    trackHelper: function(tmpName, helper ){
+        ClientDebugger.helperTracker.push( { template: tmpName, helper: helper, time : new Date() } );
+    },
+    
+    totalTime: function(){
+        if( ClientDebugger.helperTracker.length >= 2 ){
+            var startTime = ClientDebugger.helperTracker[ 0 ].time;
+            var endTime = ClientDebugger.helperTracker[ ClientDebugger.helperTracker.length - 1 ].time;
+
+            return ( endTime - startTime ) / 1000 + ' Sec.' ;
+        }
+
+        return 0;
+    },
+    helpersByTemplate: function(){
+        var helpers = {};
+        _.each( ClientDebugger.helperTracker , function( item ){
+            if( !helpers[ item.template ] )
+                helpers[ item.template ] = {};
+
+            if( helpers[ item.template ][ item.helper ] ){
+                helpers[ item.template ][ item.helper ].count += 1;
+                helpers[ item.template ][ item.helper ].lastTime = item.time;
+            }
+            else
+                helpers[ item.template ][ item.helper ] = { count: 1, time: item.time };
+
+        });
+
+        return helpers;
+    }
 }
 
 //Override Jquery 'on' function to track events getting triggered. 
@@ -28,6 +66,8 @@ ClientDebugger = {
 //     return result;
 
 // }
+
+
 //Extend the Template events prototype to include console.log
 //For Meteor 0.8.1.3
 if(Template.prototype && Template.prototype.events ){
@@ -55,15 +95,21 @@ function extendedHelper( tmpName, helper, func ){
     var color = getRandomColor();
     
     return function(){
-        var showLog = showHelperLog( tmpName );
-        if( showLog )
-            console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ' , 'font-size:12px; background:#CADFF5; color:' + color);
         
         var args = Array.prototype.slice.call( arguments );
         var result = func.apply( this, args );
-        if( result != undefined && showLog  )
-           console.log('    Result: ', result );
-           
+
+        if( ClientDebugger.showHelperLogs ){
+            var showLog = showHelperLog( tmpName );
+            if( showLog )
+                console.log('%c Called helper : "' + helper + '" of "' + tmpName + '" ' , 'font-size:12px; background:#CADFF5; color:' + color);
+
+            if( result != undefined && showLog  )
+                console.log('    Result: ', result );
+        }
+       
+        ClientDebugger.trackHelper( tmpName, helper );    
+
         return result;
     }
 }

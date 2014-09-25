@@ -6,6 +6,8 @@ This package is tested onwards meteor 0.8.1.3 version. This facilitates develope
 	1. Log templates getting rendered at client events.
 	2. Log template helpers getting called.
 	3. Log template events getting triggered. 
+	4. Calculate total loading time of helpers.
+	5. View helpers reload count.
 
 Logs will be displayed in different color :green_heart:
 
@@ -47,6 +49,12 @@ example log :
 		Result : < return value of the helper >
 
 
+To Specify the templates of the helpers need to log
+(By default all the template helpers will be logged.)
+
+```js
+ClientDebugger.templates = ['templateName1', 'templateName2', ...]
+```
 ####Template Events
 
 To log the template events getting triggered, type this in browser console.
@@ -67,7 +75,36 @@ To log using all the debugging options,
 Session.set('debug_template', '*' );
 ```
 
+####Calculate totoal loading time of helpers
+
+Sometimes you will need to check whether is there any change in the loading time after adding or removing template helpers or templates when triggering an event (ex: route change ).
+To test this,
+
+	1. Type in console : Session.set('debug_template' , 'helpers')
+	2. Type in console : ClientDebugger.start()
+	3. Fire the event 
+	4. Type in console : ClientDebugger.totalTime()
+
+Total execution time will be dislayed in seconds.
+
+
+####View helpers reload count
+
+To organize called helpers by templates and to view helpers reload count,
+
+	1. Type in console : Session.set('debug_template' , 'helpers')
+	2. Type in console : ClientDebugger.start()
+	3. Fire the event 
+	4. Type in console : ClientDebugger.helpersByTemplate()
+
+A json object will be logged in console which contains template names and called helpers info of each template.
+
+
 Remove Debug Mode
 -----------------
 
 To get rid of debug mode, just refresh the browser.
+
+####TODO
+
+Create a chrome extention to view and evaluate template loading time
