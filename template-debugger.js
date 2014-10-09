@@ -75,7 +75,7 @@ if(Template.prototype && Template.prototype.events ){
 
     Template.prototype.events = function ( eventMap ) {
         for (var k in eventMap) {
-            eventMap[k] = new Extender().extendedEvent(this.__templateName, k, eventMap[k]);
+            eventMap[k] = new Extender().extendedEvent(this.viewName.substr(9), k, eventMap[k]);
         }
 
         originalEventsPrototype.apply( this, arguments ); 

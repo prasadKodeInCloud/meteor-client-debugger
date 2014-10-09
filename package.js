@@ -5,7 +5,7 @@ Package.describe({
   summary: "Facilitates to debug client side codes of meteor apps. ",
   homepage: "https://github.com/prasadKodeInCloud/meteor-client-debugger",
   author: "Prasad Hewage(https://twitter.com/Prasad19sara)",
-  version: "0.1.12",
+  version: "0.1.13",
   git: "https://github.com/prasadKodeInCloud/meteor-client-debugger.git",
   packages: {},
 });
