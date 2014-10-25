@@ -132,10 +132,19 @@ templateDebugger = function(){
 
             for( var j in Template ){
                 if( isProjectTemplate( j ) ){
-                     _.each(Template[j], function ( hookFn, name ) {
-                        if( isHelper( j, name ) )
-                            Template[j][name] = extendedHelper( j, name, hookFn );
-                    });
+
+                    //Blaze 0.9.4 includes helpers inside __helpers object.
+                    if(Template[j].__helpers ){
+                         _.each(Template[j].__helpers, function ( hookFn, name ) {
+                            Template[j].__helpers[name] = extendedHelper( j, name, hookFn );
+                        });
+
+                    }else{
+                        _.each(Template[j], function ( hookFn, name ) {
+                            if( isHelper( j, name ) )
+                                Template[j][name] = extendedHelper( j, name, hookFn );
+                        });
+                    }
                 }
                 
             }
