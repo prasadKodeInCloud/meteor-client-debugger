@@ -1,6 +1,13 @@
 
 .client-db-container{
-	
+    position: relative;
+    float:right;
+}
+
+.client-db-content {
+    position: absolute;
+    right: 5px;
+    z-index: 10000;
 }
 
 .client-db-btn {
@@ -20,6 +27,9 @@
 	color: #5db9ff;
 	cursor: pointer;
 	text-decoration: none;
+    float: right;
+    padding: 5px;
+
 }
 .client-db-popup {
 	width: 400px;
@@ -27,8 +37,6 @@
 	border-style: solid;
 	border-width:2px;
 	float: right;
-	position: relative;
-	z-index: 20000;
 	margin-top: 10px;
 	background-color: white;
 }
@@ -47,7 +55,8 @@
     border-width: 1px;
     border-style: dotted;
     background-color: rgb(239, 250, 253);
-    min-height: 378px;
+    height: 378px;
+    overflow-y: scroll;
 }
 
 .client-db-btn-close{
