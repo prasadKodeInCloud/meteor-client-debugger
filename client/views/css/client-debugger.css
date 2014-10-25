@@ -1,0 +1,25 @@
+
+.client-db-container{
+	
+}
+ 
+.client-db-btn-view{
+	-webkit-transition: all 200ms ease-in;
+	-moz-transition: all 200ms ease-in;
+	-o-transition: all 200ms ease-in;
+	transition: all 200ms ease-in;
+	color: #5db9ff;
+	cursor: pointer;
+	text-decoration: none;
+}
+.client-db-popup {
+	width: 400px;
+	height: 500px;
+	border-style: solid;
+	border-width:2px;
+	float: right;
+	position: relative;
+	z-index: 20000;
+	margin-top: 10px;
+	background-color: white;
+}
