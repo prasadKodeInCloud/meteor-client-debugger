@@ -22,7 +22,8 @@ Package.on_use(function(api) {
         'debug-handler.js',
         'client/views/client-debugger-popup.tpl.html',
         'client/views/client-debugger-popup.vw.js',
-        'client/views/css/client-debugger.css' 
+        'client/views/css/client-debugger.css',
+        'client/lib/tree.jquery.js' 
     ], 'client');
     api.export(['ClientDebugger']);
 });
