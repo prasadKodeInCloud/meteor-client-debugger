@@ -2,7 +2,16 @@
 .client-db-container{
 	
 }
- 
+
+.client-db-btn {
+    background: #2cc5d2;
+    color: #ffffff;
+    display: inline-block;
+    line-height: 1;
+    padding: .3em .5em;
+    vertical-align: middle;
+} 
+
 .client-db-btn-view{
 	-webkit-transition: all 200ms ease-in;
 	-moz-transition: all 200ms ease-in;
@@ -29,9 +38,23 @@
 }
 
 .client-db-tree-tittle{
-    padding: 20px;
-    text-align: center;
+    padding: 20px 0px 10px;
+    text-align: left;
 }
+
+.client-db-tmp-tree{
+    padding: 10px;
+    border-width: 1px;
+    border-style: dotted;
+    background-color: rgb(239, 250, 253);
+    min-height: 378px;
+}
+
+.client-db-btn-close{
+    border-radius: 30em;
+    float:right;
+}
+
 
 /*Tree View styles*/ 
 
@@ -83,6 +106,8 @@ ul.jqtree-tree .jqtree-element {
 
 .jqtree-tree .jqtree-title.jqtree-title-folder {
     margin-left: 0;
+    color: rgb(71, 22, 22);
+    font-size: 18px;
 }
 
 ul.jqtree-tree li.jqtree-folder {

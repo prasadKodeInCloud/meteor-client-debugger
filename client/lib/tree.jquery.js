@@ -66,13 +66,16 @@
         for (_i = 0, _len = $el.length; _i < _len; _i++) {
           el = $el[_i];
           existing_widget = getWidgetData(el, data_key);
-          if (!existing_widget) {
+          if( existing_widget )
+            destroyWidget($el);
+          
+          //if (!existing_widget) {
             widget = new widget_class(el, options);
             if (!$.data(el, data_key)) {
               $.data(el, data_key, widget);
             }
             widget._init();
-          }
+         // }
         }
         return $el;
       };
