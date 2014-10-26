@@ -9,6 +9,10 @@ This package is tested onwards meteor 0.8.1.3 version. This facilitates develope
 	4. Calculate total loading time of helpers.
 	5. View helpers reload count.
 
+Helpers getting called can be seen in a tree view.
+
+[![Client-Debugger - Client side debugging tool for meteor apps.](https://silvrback.s3.amazonaws.com/uploads/a0363de8-12d1-433d-b276-1bd8694111f3/client-debugger-view-on-todos_large.png)](https://atmospherejs.com/prasad19sara/client-debugger)
+
 Logs will be displayed in different color :green_heart:
 
 [![Client-Debugger - Client side debugging tool for meteor apps.](https://silvrback.s3.amazonaws.com/uploads/49212fac-3154-4fc4-8359-df9d2ba52b4e/client-debugger1_large.png)](https://atmospherejs.com/prasad19sara/client-debugger)
@@ -19,6 +23,17 @@ Installation
 ```
 meteor add prasad19sara:client-debugger
 ```
+
+Enable UI Mode
+--------------
+Add this code to top level js file of your app.
+```js
+if( Meteor.isClient )
+	ClientDebugger.debugMode = true;
+
+```
+'Debugger' button will be automatically added to top-right corner of the app.
+Click the button to view debug popup view. Click 'Start Tracking' button for tracking helpers getting called.
 
 Debug templates
 ---------------
