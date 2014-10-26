@@ -3,6 +3,19 @@ ClientDebugger = {
     templates : [],
     helperTracker:[],
     showHelperLogs: true,
+
+    trackTemplates: function(){
+        if( ClientDebugger.setTracking )
+            return;
+        
+        var tmpDebugger = templateDebugger();
+        tmpDebugger.render();
+        tmpDebugger.helpers();
+        tmpDebugger.events();
+
+        ClientDebugger.setTracking = true;
+    },
+
     start: function(){
         ClientDebugger.helperTracker = []//{template-helper: time }
     },

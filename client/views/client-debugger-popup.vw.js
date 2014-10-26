@@ -1,6 +1,5 @@
 
 Template.clientDebuggerPopup.rendered = function(){
-	console.log('>>>>>>>>>>>>>> rendered client-debugger');
 	startedTracking = false;
 	$('.client-db-popup').hide();
 }
@@ -50,7 +49,7 @@ Template.clientDebuggerPopup.events({
 		
 	},
 	'click .client-db-btn-view': function(){
-		Session.set('debug_template', "*");
+		ClientDebugger.trackTemplates();
 		
 		$('.client-db-popup').toggle();
 	},

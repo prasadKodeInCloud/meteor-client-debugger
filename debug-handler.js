@@ -3,10 +3,10 @@ Session.setDefault('debug_template', null );
 Session.setDefault('debug_template_events', false ); 
 
 Meteor.startup( function() {
-    //Session.setDefault('debug_template', null );
-    //Session.setDefault('debug_template_events', false );  
-    $('body').prepend('<div class="client-debugger-container"> </div>');  
-    Blaze.render( Template['clientDebuggerPopup'] , $('.client-debugger-container')[0] );
+    if( ClientDebugger.debugMode ){
+        $('body').prepend('<div class="client-debugger-container"> </div>');  
+        Blaze.render( Template['clientDebuggerPopup'] , $('.client-debugger-container')[0] );
+    }
 });
 
 

@@ -111,6 +111,8 @@ ul.jqtree-tree .jqtree-element {
     color: #1C4257;
     vertical-align: middle;
     margin-left: 1.5em;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .jqtree-tree .jqtree-title.jqtree-title-folder {
