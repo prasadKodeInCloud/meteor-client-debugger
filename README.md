@@ -122,4 +122,4 @@ To get rid of debug mode, just refresh the browser.
 
 ####TODO
 
-Create a chrome extention to view and evaluate template loading time
+Create a chrome extension to view and evaluate template loading time
